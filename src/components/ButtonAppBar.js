@@ -12,6 +12,7 @@ import {
 	ListItem,
 	ListItemText,
 	ListItemIcon,
+	ListItemButton,
 	Drawer,
 } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
@@ -26,12 +27,8 @@ const ButtonAppBar = (props) => {
 	const [open, setOpen] = useState(false);
 	const drawerWidth = 240;
 
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
-
-	const handleDrawerClose = () => {
-		setOpen(false);
+	const handleDrawer = () => {
+		setOpen(!open);
 	};
 
 	const Main = styled("main", {
@@ -60,14 +57,6 @@ const ButtonAppBar = (props) => {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
-		...(open && {
-			width: `calc(100% - ${drawerWidth}px)`,
-			marginLeft: `${drawerWidth}px`,
-			transition: theme.transitions.create(["margin", "width"], {
-				easing: theme.transitions.easing.easeOut,
-				duration: theme.transitions.duration.enteringScreen,
-			}),
-		}),
 	}));
 
 	const DrawerHeader = styled("div")(({ theme }) => ({
@@ -86,12 +75,12 @@ const ButtonAppBar = (props) => {
 			<List>
 				{["Inbox", "Starred", "Send email", "Drafts"].map(
 					(text, index) => (
-						<ListItem button key={text}>
+						<ListItemButton key={text}>
 							<ListItemIcon>
 								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
 							</ListItemIcon>
 							<ListItemText primary={text} />
-						</ListItem>
+						</ListItemButton>
 					)
 				)}
 			</List>
@@ -114,14 +103,14 @@ const ButtonAppBar = (props) => {
 
 	return (
 		<Box sx={{ flex: 1 }}>
-			<CustomAppBar position="fixed" open={open}>
+			<CustomAppBar open={open} sx={{ zIndex: 2000,}}>
 				<Toolbar>
 					<IconButton
 						color="inherit"
 						aria-label="open drawer"
-						onClick={handleDrawerOpen}
+						onClick={handleDrawer}
 						edge="start"
-						sx={{ mr: 2, ...(open && { display: "none" }) }}
+						sx={{ mr: 2 }}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -143,15 +132,7 @@ const ButtonAppBar = (props) => {
 				anchor="left"
 				open={open}
 			>
-				<DrawerHeader>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === "ltr" ? (
-							<ChevronLeftIcon />
-						) : (
-							<ChevronRightIcon />
-						)}
-					</IconButton>
-				</DrawerHeader>
+				<DrawerHeader/>
 				<Divider />
 				<List>
 					{["Inbox", "Starred", "Send email", "Drafts"].map(
